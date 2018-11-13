@@ -32,7 +32,7 @@ def setOutputFilename( context ):
     projectname = os.path.splitext(projectname)[0]
     filename = prop_grp.destination
     if (prop_grp.subfolder == True):
-        filename = '/' + filename + \
+        filename = filename + \
         str(projectname) + '_' + \
         str(context.scene.name) + '/'
     filename = filename + str(prop_grp.prefix) + str(projectname) + '_' + str(context.scene.name) + str(prop_grp.suffix) + '_' + ('#' * prop_grp.num_digits) + str(prop_grp.annotation)
