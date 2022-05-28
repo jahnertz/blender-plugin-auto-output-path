@@ -27,9 +27,9 @@ bpy.context.scene.output_filename_props.num_digits = 3
 # bpy.context.scene.output_filename_props.prefix = ""
 # bpy.context.scene.output_filename_props.destination = ""
 
-def setOutputFilename( context ):
-    prop_grp = context.scene.output_filename_props
-    projectname = bpy.path.basename(context.blend_data.filepath)
+def setOutputFilename( scene ):
+    prop_grp = scene.output_filename_props
+    projectname = bpy.path.basename(bpy.context.blend_data.filepath)
     projectname = os.path.splitext(projectname)[0]
     filename = prop_grp.destination
 #    if (prop_grp.subfolder == True):
@@ -39,14 +39,14 @@ def setOutputFilename( context ):
 #    filename = filename + str(prop_grp.prefix) + str(projectname) + '_' + str(context.scene.name) + str(prop_grp.suffix) + '_' + ('#' * prop_grp.num_digits) + str(prop_grp.annotation)
 #    print(filename)
 #    bpy.context.scene.render.filepath = filename
-    bpy.context.scene.render.filepath = projectname + '_' + str(context.scene.name)
+    scene.render.filepath = projectname + '_' + str(scene.name)
     
 class SetThisSceneOutputFilenameOperator(bpy.types.Operator):
     bl_idname = "wm.set_scene_output_filename"
     bl_label = "Set Output Filenames"
     def execute(self, context):
         # Set the output filename for current scene:
-        setOutputFilename(bpy.context)
+        setOutputFilename(bpy.context.scene)
         return {'FINISHED'}
 
 bpy.utils.register_class(SetThisSceneOutputFilenameOperator)
@@ -57,8 +57,8 @@ class SetAllScenesOutputFilenamesOperator(bpy.types.Operator):
     def execute(self, context):
         # Set the output filename for all scenes
         for scene in bpy.data.scenes:
-            bpy.context.scene = scene
-            setOutputFilename(bpy.context)
+            #bpy.context.scene = scene
+            setOutputFilename(scene)
         return {'FINISHED'}
 
 bpy.utils.register_class(SetAllScenesOutputFilenamesOperator)
