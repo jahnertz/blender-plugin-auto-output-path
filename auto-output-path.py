@@ -23,7 +23,7 @@ class OutputFilenamePropertyGroup(bpy.types.PropertyGroup):
 bpy.utils.register_class(OutputFilenamePropertyGroup)
 
 bpy.types.Scene.output_filename_props = bpy.props.PointerProperty(type=OutputFilenamePropertyGroup)
-bpy.context.scene.output_filename_props.num_digits = 3
+#bpy.context.scene.output_filename_props.num_digits = 3
 #bpy.context.scene.output_filename_props.prefix = ""
 #bpy.context.scene.output_filename_props.destination = ""
 
