@@ -1,7 +1,8 @@
 bl_info = {
     "name": "Auto Output Path",
     "author": "Jahnertz",
-    "version": (1.0),
+    "version": (1, 0),
+    "blender": (2, 80, 0),
     "location": "Properties > Render Tab",
     "description": "A simple control panel for quickly creating a meaningful output paths for blender renders.",
     "warning": "",
@@ -31,13 +32,15 @@ def setOutputFilename( context ):
     projectname = bpy.path.basename(context.blend_data.filepath)
     projectname = os.path.splitext(projectname)[0]
     filename = prop_grp.destination
-    if (prop_grp.subfolder == True):
-        filename = filename + \
-        str(projectname) + '_' + \
-        str(context.scene.name) + '/'
-    filename = filename + str(prop_grp.prefix) + str(projectname) + '_' + str(context.scene.name) + str(prop_grp.suffix) + '_' + ('#' * prop_grp.num_digits) + str(prop_grp.annotation)
-    context.scene.render.filepath = filename
-
+#    if (prop_grp.subfolder == True):
+#        filename = filename + \
+#        str(projectname) + '_' + \
+#        str(context.scene.name) + '/'
+#    filename = filename + str(prop_grp.prefix) + str(projectname) + '_' + str(context.scene.name) + str(prop_grp.suffix) + '_' + ('#' * prop_grp.num_digits) + str(prop_grp.annotation)
+#    print(filename)
+#    bpy.context.scene.render.filepath = filename
+    bpy.context.scene.render.filepath = projectname + '_' + str(context.scene.name)
+    
 class SetThisSceneOutputFilenameOperator(bpy.types.Operator):
     bl_idname = "wm.set_scene_output_filename"
     bl_label = "Set Output Filenames"
@@ -54,7 +57,7 @@ class SetAllScenesOutputFilenamesOperator(bpy.types.Operator):
     def execute(self, context):
         # Set the output filename for all scenes
         for scene in bpy.data.scenes:
-            bpy.context.screen.scene = scene
+            bpy.context.scene = scene
             setOutputFilename(bpy.context)
         return {'FINISHED'}
 
@@ -66,7 +69,7 @@ class AutoOutputNamePanel(bpy.types.Panel):
     bl_idname = "OBJECT_PT_Auto_Output_Name"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
-    bl_context = "render"
+    bl_context = "output"
 
     def draw(self, context):
         prop_grp = bpy.context.scene.output_filename_props
@@ -84,7 +87,7 @@ class AutoOutputNamePanel(bpy.types.Panel):
         row = layout.row(align=True)
         row.label(text="Set Output Filename:")
         row.operator("wm.set_scene_output_filename", text="This Scene")
-        # row.operator("wm.set_all_scenes_output_filenames", text="All Scenes", icon="ERROR") TODO: This button should use the same settings and apply it to all scenes.
+        row.operator("wm.set_all_scenes_output_filenames", text="All Scenes", icon="ERROR") # TODO: This button should use the same settings and apply it to all scenes.
 
 def register():
     bpy.utils.register_class(AutoOutputNamePanel)
