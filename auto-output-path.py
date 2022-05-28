@@ -24,22 +24,22 @@ bpy.utils.register_class(OutputFilenamePropertyGroup)
 
 bpy.types.Scene.output_filename_props = bpy.props.PointerProperty(type=OutputFilenamePropertyGroup)
 bpy.context.scene.output_filename_props.num_digits = 3
-# bpy.context.scene.output_filename_props.prefix = ""
-# bpy.context.scene.output_filename_props.destination = ""
+#bpy.context.scene.output_filename_props.prefix = ""
+#bpy.context.scene.output_filename_props.destination = ""
 
 def setOutputFilename( scene ):
     prop_grp = scene.output_filename_props
-    projectname = bpy.path.basename(bpy.context.blend_data.filepath)
+#    projectname = bpy.path.basename(bpy.context.blend_data.filepath)
+    projectname = bpy.context.blend_data.filepath
     projectname = os.path.splitext(projectname)[0]
-    filename = prop_grp.destination
+#    filename = prop_grp.destination
 #    if (prop_grp.subfolder == True):
 #        filename = filename + \
 #        str(projectname) + '_' + \
 #        str(context.scene.name) + '/'
-#    filename = filename + str(prop_grp.prefix) + str(projectname) + '_' + str(context.scene.name) + str(prop_grp.suffix) + '_' + ('#' * prop_grp.num_digits) + str(prop_grp.annotation)
-#    print(filename)
-#    bpy.context.scene.render.filepath = filename
-    scene.render.filepath = projectname + '_' + str(scene.name)
+#    filename = str(prop_grp.prefix) + str(projectname) + '_' + str(scene.name) + str(prop_grp.suffix) + '_' + ('#' * prop_grp.num_digits) + str(prop_grp.annotation)
+#    scene.render.filepath = filename
+    scene.render.filepath = projectname + '_' + str(scene.name) + '_f###'
     
 class SetThisSceneOutputFilenameOperator(bpy.types.Operator):
     bl_idname = "wm.set_scene_output_filename"
@@ -75,17 +75,18 @@ class AutoOutputNamePanel(bpy.types.Panel):
         prop_grp = bpy.context.scene.output_filename_props
         layout = self.layout
         col = layout.column(align=True)
-        row = layout.row(align=True)
-        row.prop(prop_grp, "destination")
-        row.prop(prop_grp, "subfolder")
-        row = layout.row(align=True)
-        row.prop(prop_grp, "prefix")
-        row.prop(prop_grp, "suffix")
-        row = layout.row(align=True)
-        row.prop(prop_grp, "num_digits")
-        row.prop(prop_grp, "annotation")
+#        row = layout.row(align=True)
+#        row.prop(prop_grp, "destination")
+#        row.prop(prop_grp, "subfolder")
+#        row = layout.row(align=True)
+#        row.prop(prop_grp, "prefix")
+#        row.prop(prop_grp, "suffix")
+#        row = layout.row(align=True)
+#        row.prop(prop_grp, "num_digits")
+#        row.prop(prop_grp, "annotation")
         row = layout.row(align=True)
         row.label(text="Set Output Filename:")
+        row = layout.row(align=True)
         row.operator("wm.set_scene_output_filename", text="This Scene")
         row.operator("wm.set_all_scenes_output_filenames", text="All Scenes", icon="ERROR") # TODO: This button should use the same settings and apply it to all scenes.
 
