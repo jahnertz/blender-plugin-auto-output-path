@@ -94,7 +94,7 @@ def register():
     bpy.utils.register_class(AutoOutputNamePanel)
 
 def unregister():
-    bpy.utils.unregister_class(AutoOutputName)
+    bpy.utils.unregister_class(AutoOutputNamePanel)
 
 if __name__ == "__main__":
     register()
